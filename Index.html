@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merry Christmas</title>
+    <title>Halloween Video</title>
     <style>
         * {
             margin: 0;
@@ -12,92 +12,129 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial Black', sans-serif;
             background: #000;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Intro Screen */
-        .intro-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: radial-gradient(circle at center, #1a0510, #000000);
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+            min-height: 100vh;
         }
 
-        .intro-screen.hidden {
-            opacity: 0;
-            transform: scale(1.2);
-            pointer-events: none;
-        }
-
-        .intro-container {
-            text-align: center;
+        /* Video container - 16:9 aspect ratio */
+        .video-container {
             position: relative;
+            width: 100%;
+            max-width: 1920px;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #0a0000 0%, #1a0500 50%, #2d0a00 100%);
+            overflow: hidden;
+            box-shadow: 0 0 100px rgba(255, 69, 0, 0.5);
         }
 
-        /* Vòng tròn phát sáng */
-        .glow-circle {
+        /* Scenes */
+        .scene {
             position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulseGlow 3s ease-in-out infinite;
-            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
 
-        @keyframes pulseGlow {
-            0%, 100% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0.5;
+        .scene.active {
+            opacity: 1;
+        }
+
+        /* Scene 1: Dark forest entrance */
+        .scene-1 {
+            background: radial-gradient(circle at center, #1a0a00, #000000);
+        }
+
+        .forest {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, #000, transparent);
+        }
+
+        .trees {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            font-size: 15vmin;
+            filter: brightness(0.3);
+        }
+
+        .moon {
+            position: absolute;
+            top: 10%;
+            right: 15%;
+            font-size: 20vmin;
+            animation: moonGlow 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 50px rgba(255, 200, 100, 0.8));
+        }
+
+        @keyframes moonGlow {
+            0%, 100% { filter: drop-shadow(0 0 50px rgba(255, 200, 100, 0.8)); }
+            50% { filter: drop-shadow(0 0 80px rgba(255, 200, 100, 1)); }
+        }
+
+        /* Scene 2: Pumpkin reveal */
+        .scene-2 {
+            background: radial-gradient(circle at center, #2d1400, #000000);
+        }
+
+        .big-pumpkin {
+            font-size: 40vmin;
+            animation: pumpkinReveal 2s ease-out;
+            filter: drop-shadow(0 0 80px rgba(255, 140, 0, 1));
+        }
+
+        @keyframes pumpkinReveal {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
             }
-            50% {
-                transform: translate(-50%, -50%) scale(1.3);
-                opacity: 0.8;
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
             }
         }
 
-        .intro-text {
-            position: relative;
-            z-index: 2;
+        /* Scene 3: Title card */
+        .scene-3 {
+            background: radial-gradient(circle at center, #1a0000, #000000);
+            flex-direction: column;
         }
 
-        .merry {
-            font-size: 5em;
-            font-weight: 300;
-            letter-spacing: 15px;
-            background: linear-gradient(45deg, #ffd700, #fff, #ffd700);
+        .title-happy {
+            font-size: 12vmin;
+            letter-spacing: 2vmin;
+            background: linear-gradient(45deg, #ff4500, #ff8c00, #ff4500);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shimmer 3s ease-in-out infinite, fadeInUp 1.5s ease-out;
-            margin-bottom: 10px;
+            animation: shimmer 2s ease-in-out infinite, slideInLeft 1s ease-out;
+            margin-bottom: 2vh;
         }
 
-        .christmas {
-            font-size: 6em;
-            font-weight: bold;
-            letter-spacing: 20px;
-            background: linear-gradient(45deg, #ff0000, #00ff00, #ff0000);
+        .title-halloween {
+            font-size: 18vmin;
+            letter-spacing: 3vmin;
+            background: linear-gradient(45deg, #ff4500, #8b00ff, #ff4500);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: shimmer 3s ease-in-out infinite, fadeInUp 1.5s ease-out 0.3s backwards;
-            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            animation: shimmer 2s ease-in-out infinite, slideInRight 1s ease-out;
+            filter: drop-shadow(0 0 60px rgba(255, 69, 0, 1));
         }
 
         @keyframes shimmer {
@@ -105,831 +142,366 @@
             50% { background-position: 100% 50%; }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .year {
-            font-size: 2em;
-            color: #ffd700;
-            letter-spacing: 10px;
-            margin-top: 20px;
-            animation: fadeIn 1.5s ease-out 0.6s backwards;
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Scene 4: Trick or Treat */
+        .scene-4 {
+            background: linear-gradient(135deg, #1a0500 0%, #0a0000 100%);
+            flex-direction: column;
         }
 
-        /* Particles/Stars */
-        .particle {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle 2s ease-in-out infinite;
-            z-index: 1;
+        .trick-or-treat {
+            font-size: 15vmin;
+            letter-spacing: 2vmin;
+            color: #ff8c00;
+            text-shadow: 
+                0 0 20px rgba(255, 140, 0, 1),
+                0 0 40px rgba(255, 69, 0, 0.8),
+                0 0 60px rgba(255, 69, 0, 0.6);
+            animation: flicker 0.5s ease-in-out infinite, zoomIn 1.5s ease-out;
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0); }
-            50% { opacity: 1; transform: scale(1); }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
-        /* Snowflakes */
-        .snowflake {
-            position: fixed;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 20px;
-            animation: snowfall linear infinite;
-            z-index: 999;
+        @keyframes zoomIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes snowfall {
-            0% {
-                transform: translateY(-10vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(110vh) rotate(360deg);
-                opacity: 0.3;
-            }
-        }
-
-        /* Main Content */
-        .main-content {
-            display: none;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
-            padding: 40px 20px;
-            position: relative;
-        }
-
-        .main-content.visible {
-            display: block;
-            animation: contentFadeIn 1.5s ease-out;
-        }
-
-        @keyframes contentFadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Header với hiệu ứng */
-        .header {
-            text-align: center;
-            margin: 40px 0 60px;
-        }
-
-        .header-title {
-            font-size: 3em;
-            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d96ff);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient 3s ease infinite;
-            font-weight: bold;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Card Container */
-        .card-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
-            animation: cardSlideUp 1s ease-out;
-        }
-
-        @keyframes cardSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .card-icon {
-            text-align: center;
-            font-size: 80px;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
-            animation: floatIcon 3s ease-in-out infinite;
-        }
-
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .card-title {
-            color: #fff;
-            font-size: 2em;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 300;
-            letter-spacing: 3px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            color: #ffd700;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            color: #fff;
-            font-size: 1em;
-            transition: all 0.3s ease;
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.1);
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .send-button {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 15px;
-            color: white;
-            font-size: 1.3em;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 30px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .send-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .send-button:hover::before {
-            left: 100%;
-        }
-
-        .send-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-        }
-
-        .send-button:active {
-            transform: translateY(0);
-        }
-
-        /* Message Display */
-        .message-display {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 50px 40px;
-            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
-            text-align: center;
-        }
-
-        .message-display.show {
-            display: block;
-            animation: cardSlideUp 1s ease-out;
-        }
-
-        .message-to {
-            font-size: 2.5em;
-            color: #ffd700;
-            margin-bottom: 30px;
-            font-weight: 300;
-        }
-
-        .message-text {
-            font-size: 1.3em;
-            color: #fff;
-            line-height: 1.8;
-            margin: 30px 0;
-            opacity: 0.9;
-        }
-
-        .message-from {
-            font-size: 1.2em;
-            color: #ffd700;
-            margin-top: 40px;
-            font-style: italic;
-        }
-
-        /* Fireworks */
-        .firework {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .firework-particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            animation: explode 1.5s ease-out forwards;
-        }
-
-        @keyframes explode {
-            0% {
-                transform: translate(0, 0);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--tx), var(--ty));
-                opacity: 0;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .merry {
-                font-size: 3em;
-                letter-spacing: 8px;
-            }
-
-            .christmas {
-                font-size: 3.5em;
-                letter-spacing: 10px;
-            }
-
-            .year {
-                font-size: 1.5em;
-                letter-spacing: 5px;
-            }
-
-            .glow-circle {
-                width: 250px;
-                height: 250px;
-            }
-
-            .header-title {
-                font-size: 2em;
-            }
-
-            .card-container {
-                padding: 30px 20px;
-            }
-
-            .card-icon {
-                font-size: 60px;
-            }
-
-            .message-to {
-                font-size: 1.8em;
-            }
-
-            .message-text {
-                font-size: 1.1em;
-            }
-        }
-
-        @media (max-width: 375px) {
-            .merry {
-                font-size: 2em;
-                letter-spacing: 5px;
-            }
-
-            .christmas {
-                font-size: 2.5em;
-                letter-spacing: 8px;
-            }
-
-            .card-container {
-                padding: 25px 15px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Intro Screen -->
-    <div class="intro-screen" id="introScreen">
-        <div class="glow-circle"></div>
-        <div class="intro-container">
-            <div class="intro-text">
-                <div class="merry">MERRY</div>
-                <div class="christmas">CHRISTMAS</div>
-                <div class="year">2 0 2 5</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content" id="mainContent">
-        <div class="header">
-            <h1 class="header-title">🎄 GỬI LỜI CHÚC GIÁNG SINH 🎄</h1>
-        </div>
-
-        <div class="card-container" id="cardContainer">
-            <div class="card-icon">🎁</div>
-            <h2 class="card-title">TẶNG QUÀ NOEL</h2>
-            
-            <div class="form-group">
-                <label>Gửi đến:</label>
-                <input type="text" id="recipientName" placeholder="Nhập tên người nhận...">
-            </div>
-            
-            <div class="form-group">
-                <label>Từ:</label>
-                <input type="text" id="senderName" placeholder="Nhập tên của bạn...">
-            </div>
-            
-            <button class="send-button" onclick="sendGift()">
-                ✨ GỬI LỜI CHÚC ✨
-            </button>
-        </div>
-
-        <div class="message-display" id="messageDisplay">
-            <div class="card-icon">🎅</div>
-            <h2 class="message-to">Gửi <span id="displayRecipient"></span></h2>
-            <p class="message-text">
-                Chúc bạn một mùa Giáng Sinh tràn đầy niềm vui, hạnh phúc và ấm áp bên những người thân yêu!<br><br>
-                Mong rằng năm mới sẽ mang đến cho bạn nhiều thành công, sức khỏe dồi dào và những điều tuyệt vời nhất! 🎄✨
-            </p>
-            <p class="message-from">💝 Từ <span id="displaySender"></span> 💝</p>
-            <button class="send-button" onclick="resetForm()">
-                📧 GỬI CHO NGƯỜI KHÁC
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // Tạo particles
-        function createParticles() {
-            for (let i = 0; i < 100; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 2 + 's';
-                particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                document.body.appendChild(particle);
-            }
-        }
-
-        // Tạo tuyết rơi
-        function createSnowflakes() {
-            const snowflakes = ['❄', '❅', '❆'];
-            for (let i = 0; i < 30; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                snowflake.style.left = Math.random() * 100 + '%';
-                snowflake.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                snowflake.style.animationDelay = Math.random() * 5 + 's';
-                document.body.appendChild(snowflake);
-            }
-        }
-
-        // Chuyển từ intro sang main content
-        setTimeout(() => {
-            document.getElementById('introScreen').classList.add('hidden');
-            setTimeout(() => {
-                document.getElementById('mainContent').classList.add('visible');
-            }, 1500);
-        }, 4000);
-
-        // Gửi quà
-        function sendGift() {
-            const recipient = document.getElementById('recipientName').value.trim();
-            const sender = document.getElementById('senderName').value.trim();
-
-            if (!recipient || !sender) {
-                alert('Vui lòng nhập đầy đủ thông tin! 🎄');
-                return;
-            }
-
-            document.getElementById('displayRecipient').textContent = recipient;
-            document.getElementById('displaySender').textContent = sender;
-
-            document.getElementById('cardContainer').style.display = 'none';
-            document.getElementById('messageDisplay').classList.add('show');
-
-            createFireworks();
-        }
-
-        // Reset form
-        function resetForm() {
-            document.getElementById('recipientName').value = '';
-            document.getElementById('senderName').value = '';
-            document.getElementById('messageDisplay').classList.remove('show');
-            document.getElementById('cardContainer').style.display = 'block';
-        }
-
-        // Tạo pháo hoa
-        function createFireworks() {
-            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffd700'];
-            
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * window.innerHeight * 0.6;
-                    
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    firework.style.left = x + 'px';
-                    firework.style.top = y + 'px';
-                    document.body.appendChild(firework);
-
-                    for (let j = 0; j < 30; j++) {
-                        const particle = document.createElement('div');
-                        particle.className = 'firework-particle';
-                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                        
-                        const angle = (Math.PI * 2 * j) / 30;
-                        const velocity = 50 + Math.random() * 100;
-                        particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
-                        particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
-                        
-                        firework.appendChild(particle);
-                    }
-
-                    setTimeout(() => firework.remove(), 1500);
-                }, i * 400);
-            }
-        }
-
-        createParticles();
-        createSnowflakes();
-    </script>
-</body>
-</html>        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px 20px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            animation: fadeIn 1s ease-in;
-            margin: auto;
+        .candy-icons {
+            display: flex;
+            gap: 5vmin;
+            margin-top: 5vh;
+            font-size: 10vmin;
+            animation: fadeIn 2s ease-out 0.5s backwards;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .tree {
-            font-size: 60px;
-            margin-bottom: 15px;
-            animation: swing 2s ease-in-out infinite;
+        .candy-icon {
+            animation: bounce 1s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.8));
         }
 
-        @keyframes swing {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-
-        h1 {
-            color: #c41e3a;
-            font-size: 1.8em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            word-wrap: break-word;
-        }
-
-        .message {
-            color: #333;
-            font-size: 1em;
-            line-height: 1.6;
-            margin: 20px 0;
-            word-wrap: break-word;
-        }
-
-        .gift-box {
-            margin: 20px 0;
-            font-size: 50px;
-            animation: bounce 2s infinite;
-        }
+        .candy-icon:nth-child(2) { animation-delay: 0.2s; }
+        .candy-icon:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
         }
 
-        .signature {
-            margin-top: 20px;
-            font-style: italic;
-            color: #666;
-            font-size: 1em;
-            word-wrap: break-word;
+        /* Flying bats */
+        .bat {
+            position: absolute;
+            font-size: 8vmin;
+            animation: flyAcross linear infinite;
+            filter: drop-shadow(0 0 10px rgba(128, 0, 128, 0.8));
         }
 
-        .decorations {
-            display: flex;
-            justify-content: space-around;
-            font-size: 25px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+        @keyframes flyAcross {
+            0% { transform: translateX(-20vw) translateY(0); }
+            50% { transform: translateX(60vw) translateY(-10vh); }
+            100% { transform: translateX(120vw) translateY(0); }
         }
 
-        .decoration {
-            animation: pulse 1.5s ease-in-out infinite;
+        /* Ghosts floating */
+        .ghost-float {
+            position: absolute;
+            font-size: 10vmin;
+            animation: ghostFloat 8s ease-in-out infinite;
+            opacity: 0.7;
+            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
         }
 
-        .decoration:nth-child(2) {
-            animation-delay: 0.3s;
+        @keyframes ghostFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-50px); }
         }
 
-        .decoration:nth-child(3) {
-            animation-delay: 0.6s;
+        /* Particles */
+        .particle {
+            position: absolute;
+            width: 0.5vmin;
+            height: 0.5vmin;
+            background: #ff8c00;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+            box-shadow: 0 0 10px #ff8c00;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(2); }
         }
 
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 2px solid #c41e3a;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-family: 'Georgia', serif;
+        /* Progress bar */
+        .progress-bar {
+            position: absolute;
+            bottom: 2%;
+            left: 5%;
+            right: 5%;
+            height: 0.5vh;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
-        button {
-            background: linear-gradient(135deg, #c41e3a, #e74c3c);
-            color: white;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4500, #ff8c00);
+            width: 0%;
+            animation: progress 20s linear forwards;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+        }
+
+        @keyframes progress {
+            to { width: 100%; }
+        }
+
+        /* Replay button */
+        .replay-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ff4500, #8b00ff);
             border: none;
-            padding: 12px 30px;
-            font-size: 1em;
-            border-radius: 30px;
+            padding: 2vh 4vw;
+            font-size: 3vmin;
+            color: white;
+            border-radius: 50px;
             cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.4);
-            width: auto;
-            min-width: 150px;
+            font-weight: bold;
+            letter-spacing: 0.5vmin;
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.6);
+        .replay-btn.show {
+            opacity: 1;
+            pointer-events: all;
         }
 
-        button:active {
-            transform: translateY(0);
+        .replay-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 60px rgba(255, 69, 0, 1);
         }
 
-        /* Responsive cho máy tính bảng */
-        @media (min-width: 768px) {
-            .container {
-                padding: 40px 35px;
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .video-container {
+                width: 100vw;
+                height: 100vh;
+                max-width: none;
+                aspect-ratio: auto;
             }
 
-            h1 {
-                font-size: 2.2em;
+            .title-happy {
+                font-size: 10vmin;
+                letter-spacing: 1.5vmin;
             }
 
-            .tree {
-                font-size: 70px;
+            .title-halloween {
+                font-size: 14vmin;
+                letter-spacing: 2vmin;
             }
 
-            .gift-box {
-                font-size: 55px;
-            }
-
-            .message {
-                font-size: 1.1em;
-            }
-
-            .decorations {
-                font-size: 28px;
-            }
-        }
-
-        /* Responsive cho màn hình lớn */
-        @media (min-width: 1024px) {
-            .container {
-                padding: 50px;
-            }
-
-            h1 {
-                font-size: 2.5em;
-            }
-
-            .tree {
-                font-size: 80px;
-                margin-bottom: 20px;
-            }
-
-            .gift-box {
-                font-size: 60px;
-                margin: 30px 0;
-            }
-
-            .message {
-                font-size: 1.2em;
-                line-height: 1.8;
-                margin: 30px 0;
-            }
-
-            .signature {
-                font-size: 1.1em;
-                margin-top: 30px;
-            }
-
-            .decorations {
-                font-size: 30px;
-                margin-top: 20px;
-            }
-
-            input, textarea {
-                font-size: 1em;
-                padding: 12px;
-                margin: 10px 0;
-            }
-
-            button {
-                padding: 15px 40px;
-                font-size: 1.1em;
-                margin-top: 20px;
+            .trick-or-treat {
+                font-size: 12vmin;
+                letter-spacing: 1.5vmin;
             }
         }
 
-        /* Responsive cho điện thoại nhỏ */
-        @media (max-width: 375px) {
-            .container {
-                padding: 25px 15px;
+        @media (max-width: 480px) {
+            .title-happy {
+                font-size: 8vmin;
+                letter-spacing: 1vmin;
             }
 
-            h1 {
-                font-size: 1.5em;
+            .title-halloween {
+                font-size: 11vmin;
+                letter-spacing: 1.5vmin;
             }
 
-            .tree {
-                font-size: 50px;
+            .trick-or-treat {
+                font-size: 10vmin;
+                letter-spacing: 1vmin;
             }
 
-            .gift-box {
-                font-size: 40px;
+            .candy-icons {
+                gap: 3vmin;
             }
-
-            .message {
-                font-size: 0.95em;
-            }
-
-            .decorations {
-                font-size: 22px;
-            }
-
-            button {
-                padding: 10px 25px;
-                font-size: 0.9em;
-            }
-        }
-
-        .edit-mode, .view-mode {
-            display: none;
-        }
-
-        .edit-mode.active, .view-mode.active {
-            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="tree">🎄</div>
-        
-        <div class="edit-mode active">
-            <h1>Tạo Thiệp Noel</h1>
-            <input type="text" id="recipientName" placeholder="Tên người nhận...">
-            <textarea id="messageText" rows="6" placeholder="Lời chúc của bạn..."></textarea>
-            <input type="text" id="senderName" placeholder="Tên người gửi...">
-            <button onclick="generateCard()">🎁 Tạo Thiệp</button>
+    <div class="video-container" id="videoContainer">
+        <!-- Scene 1: Forest with moon -->
+        <div class="scene scene-1 active" id="scene1">
+            <div class="moon">🌕</div>
+            <div class="forest">
+                <div class="trees">
+                    <span>🌲</span>
+                    <span>🌲</span>
+                    <span>🌲</span>
+                    <span>🌲</span>
+                    <span>🌲</span>
+                </div>
+            </div>
         </div>
 
-        <div class="view-mode">
-            <h1>Merry Christmas! 🎅</h1>
-            <div class="gift-box">🎁</div>
-            <div class="message">
-                <p><strong>Gửi <span id="displayRecipient"></span>,</strong></p>
-                <p id="displayMessage"></p>
-            </div>
-            <div class="signature">
-                ❤️ Từ <span id="displaySender"></span> ❤️
-            </div>
-            <div class="decorations">
-                <span class="decoration">⭐</span>
-                <span class="decoration">🔔</span>
-                <span class="decoration">🎀</span>
-            </div>
-            <button onclick="editCard()">✏️ Chỉnh Sửa</button>
+        <!-- Scene 2: Pumpkin reveal -->
+        <div class="scene scene-2" id="scene2">
+            <div class="big-pumpkin">🎃</div>
         </div>
+
+        <!-- Scene 3: Title -->
+        <div class="scene scene-3" id="scene3">
+            <div class="title-happy">HAPPY</div>
+            <div class="title-halloween">HALLOWEEN</div>
+        </div>
+
+        <!-- Scene 4: Trick or Treat -->
+        <div class="scene scene-4" id="scene4">
+            <div class="trick-or-treat">TRICK OR TREAT</div>
+            <div class="candy-icons">
+                <span class="candy-icon">🍬</span>
+                <span class="candy-icon">🍭</span>
+                <span class="candy-icon">🍫</span>
+            </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- Replay button -->
+        <button class="replay-btn" id="replayBtn" onclick="replayVideo()">
+            🔄 XEM LẠI
+        </button>
     </div>
 
     <script>
-        // Tạo tuyết rơi
-        function createSnowflakes() {
-            const snowflakes = ['❄', '❅', '❆'];
-            for (let i = 0; i < 50; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-                snowflake.style.left = Math.random() * 100 + '%';
-                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                snowflake.style.animationDelay = Math.random() * 5 + 's';
-                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
-                document.body.appendChild(snowflake);
+        const scenes = [
+            { id: 'scene1', duration: 3000 },
+            { id: 'scene2', duration: 3000 },
+            { id: 'scene3', duration: 7000 },
+            { id: 'scene4', duration: 7000 }
+        ];
+
+        let currentScene = 0;
+        let isPlaying = true;
+
+        function showScene(index) {
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.classList.remove('active');
+            });
+
+            if (index < scenes.length) {
+                document.getElementById(scenes[index].id).classList.add('active');
             }
         }
 
-        function generateCard() {
-            const recipient = document.getElementById('recipientName').value || 'Bạn';
-            const message = document.getElementById('messageText').value || 'Chúc bạn một mùa Giáng sinh ấm áp, hạnh phúc và tràn đầy niềm vui! 🎄✨';
-            const sender = document.getElementById('senderName').value || 'Người bạn của bạn';
-
-            document.getElementById('displayRecipient').textContent = recipient;
-            document.getElementById('displayMessage').textContent = message;
-            document.getElementById('displaySender').textContent = sender;
-
-            document.querySelector('.edit-mode').classList.remove('active');
-            document.querySelector('.view-mode').classList.add('active');
+        function playVideo() {
+            if (currentScene < scenes.length) {
+                showScene(currentScene);
+                
+                setTimeout(() => {
+                    currentScene++;
+                    if (currentScene < scenes.length) {
+                        playVideo();
+                    } else {
+                        // Video ended
+                        setTimeout(() => {
+                            document.getElementById('replayBtn').classList.add('show');
+                        }, 1000);
+                    }
+                }, scenes[currentScene].duration);
+            }
         }
 
-        function editCard() {
-            document.querySelector('.view-mode').classList.remove('active');
-            document.querySelector('.edit-mode').classList.add('active');
+        function replayVideo() {
+            currentScene = 0;
+            document.getElementById('replayBtn').classList.remove('show');
+            
+            // Reset progress bar
+            const progressFill = document.querySelector('.progress-fill');
+            progressFill.style.animation = 'none';
+            setTimeout(() => {
+                progressFill.style.animation = 'progress 20s linear forwards';
+            }, 10);
+            
+            playVideo();
         }
 
-        createSnowflakes();
+        // Create bats
+        function createBats() {
+            for (let i = 0; i < 8; i++) {
+                const bat = document.createElement('div');
+                bat.className = 'bat';
+                bat.textContent = '🦇';
+                bat.style.top = (Math.random() * 60 + 10) + '%';
+                bat.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                bat.style.animationDelay = Math.random() * 8 + 's';
+                document.getElementById('videoContainer').appendChild(bat);
+            }
+        }
+
+        // Create ghosts
+        function createGhosts() {
+            const positions = [
+                { left: '10%', top: '20%' },
+                { right: '10%', top: '30%' },
+                { left: '15%', bottom: '30%' },
+                { right: '15%', bottom: '25%' }
+            ];
+
+            positions.forEach((pos, i) => {
+                const ghost = document.createElement('div');
+                ghost.className = 'ghost-float';
+                ghost.textContent = '👻';
+                Object.assign(ghost.style, pos);
+                ghost.style.animationDelay = i * 2 + 's';
+                document.getElementById('videoContainer').appendChild(ghost);
+            });
+        }
+
+        // Create particles
+        function createParticles() {
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                document.getElementById('videoContainer').appendChild(particle);
+            }
+        }
+
+        // Initialize
+        createBats();
+        createGhosts();
+        createParticles();
+        playVideo();
     </script>
 </body>
 </html>
