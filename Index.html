@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp Noel</title>
+    <title>Merry Christmas</title>
     <style>
         * {
             margin: 0;
@@ -12,29 +12,606 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
-            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Intro Screen */
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(circle at center, #1a0510, #000000);
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
-            overflow-y: auto;
+            z-index: 1000;
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+
+        .intro-screen.hidden {
+            opacity: 0;
+            transform: scale(1.2);
+            pointer-events: none;
+        }
+
+        .intro-container {
+            text-align: center;
             position: relative;
-            padding: 20px 10px;
         }
 
-        .snowflake {
+        /* Vòng tròn phát sáng */
+        .glow-circle {
             position: absolute;
-            top: -10px;
-            color: white;
-            font-size: 1em;
-            opacity: 0.8;
-            animation: fall linear infinite;
-            user-select: none;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulseGlow 3s ease-in-out infinite;
+            z-index: 1;
         }
 
-        @keyframes fall {
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 0.8;
+            }
+        }
+
+        .intro-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .merry {
+            font-size: 5em;
+            font-weight: 300;
+            letter-spacing: 15px;
+            background: linear-gradient(45deg, #ffd700, #fff, #ffd700);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s ease-in-out infinite, fadeInUp 1.5s ease-out;
+            margin-bottom: 10px;
+        }
+
+        .christmas {
+            font-size: 6em;
+            font-weight: bold;
+            letter-spacing: 20px;
+            background: linear-gradient(45deg, #ff0000, #00ff00, #ff0000);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s ease-in-out infinite, fadeInUp 1.5s ease-out 0.3s backwards;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .year {
+            font-size: 2em;
+            color: #ffd700;
+            letter-spacing: 10px;
+            margin-top: 20px;
+            animation: fadeIn 1.5s ease-out 0.6s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Particles/Stars */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Snowflakes */
+        .snowflake {
+            position: fixed;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 20px;
+            animation: snowfall linear infinite;
+            z-index: 999;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .main-content.visible {
+            display: block;
+            animation: contentFadeIn 1.5s ease-out;
+        }
+
+        @keyframes contentFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Header với hiệu ứng */
+        .header {
+            text-align: center;
+            margin: 40px 0 60px;
+        }
+
+        .header-title {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d96ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+            font-weight: bold;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Card Container */
+        .card-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            animation: cardSlideUp 1s ease-out;
+        }
+
+        @keyframes cardSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-icon {
+            text-align: center;
+            font-size: 80px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .card-title {
+            color: #fff;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #ffd700;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .send-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .send-button:hover::before {
+            left: 100%;
+        }
+
+        .send-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .send-button:active {
+            transform: translateY(0);
+        }
+
+        /* Message Display */
+        .message-display {
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 40px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .message-display.show {
+            display: block;
+            animation: cardSlideUp 1s ease-out;
+        }
+
+        .message-to {
+            font-size: 2.5em;
+            color: #ffd700;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .message-text {
+            font-size: 1.3em;
+            color: #fff;
+            line-height: 1.8;
+            margin: 30px 0;
+            opacity: 0.9;
+        }
+
+        .message-from {
+            font-size: 1.2em;
+            color: #ffd700;
+            margin-top: 40px;
+            font-style: italic;
+        }
+
+        /* Fireworks */
+        .firework {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .firework-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .merry {
+                font-size: 3em;
+                letter-spacing: 8px;
+            }
+
+            .christmas {
+                font-size: 3.5em;
+                letter-spacing: 10px;
+            }
+
+            .year {
+                font-size: 1.5em;
+                letter-spacing: 5px;
+            }
+
+            .glow-circle {
+                width: 250px;
+                height: 250px;
+            }
+
+            .header-title {
+                font-size: 2em;
+            }
+
+            .card-container {
+                padding: 30px 20px;
+            }
+
+            .card-icon {
+                font-size: 60px;
+            }
+
+            .message-to {
+                font-size: 1.8em;
+            }
+
+            .message-text {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .merry {
+                font-size: 2em;
+                letter-spacing: 5px;
+            }
+
+            .christmas {
+                font-size: 2.5em;
+                letter-spacing: 8px;
+            }
+
+            .card-container {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Intro Screen -->
+    <div class="intro-screen" id="introScreen">
+        <div class="glow-circle"></div>
+        <div class="intro-container">
+            <div class="intro-text">
+                <div class="merry">MERRY</div>
+                <div class="christmas">CHRISTMAS</div>
+                <div class="year">2 0 2 5</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <h1 class="header-title">🎄 GỬI LỜI CHÚC GIÁNG SINH 🎄</h1>
+        </div>
+
+        <div class="card-container" id="cardContainer">
+            <div class="card-icon">🎁</div>
+            <h2 class="card-title">TẶNG QUÀ NOEL</h2>
+            
+            <div class="form-group">
+                <label>Gửi đến:</label>
+                <input type="text" id="recipientName" placeholder="Nhập tên người nhận...">
+            </div>
+            
+            <div class="form-group">
+                <label>Từ:</label>
+                <input type="text" id="senderName" placeholder="Nhập tên của bạn...">
+            </div>
+            
+            <button class="send-button" onclick="sendGift()">
+                ✨ GỬI LỜI CHÚC ✨
+            </button>
+        </div>
+
+        <div class="message-display" id="messageDisplay">
+            <div class="card-icon">🎅</div>
+            <h2 class="message-to">Gửi <span id="displayRecipient"></span></h2>
+            <p class="message-text">
+                Chúc bạn một mùa Giáng Sinh tràn đầy niềm vui, hạnh phúc và ấm áp bên những người thân yêu!<br><br>
+                Mong rằng năm mới sẽ mang đến cho bạn nhiều thành công, sức khỏe dồi dào và những điều tuyệt vời nhất! 🎄✨
+            </p>
+            <p class="message-from">💝 Từ <span id="displaySender"></span> 💝</p>
+            <button class="send-button" onclick="resetForm()">
+                📧 GỬI CHO NGƯỜI KHÁC
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Tạo particles
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // Tạo tuyết rơi
+        function createSnowflakes() {
+            const snowflakes = ['❄', '❅', '❆'];
+            for (let i = 0; i < 30; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(snowflake);
+            }
+        }
+
+        // Chuyển từ intro sang main content
+        setTimeout(() => {
+            document.getElementById('introScreen').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('mainContent').classList.add('visible');
+            }, 1500);
+        }, 4000);
+
+        // Gửi quà
+        function sendGift() {
+            const recipient = document.getElementById('recipientName').value.trim();
+            const sender = document.getElementById('senderName').value.trim();
+
+            if (!recipient || !sender) {
+                alert('Vui lòng nhập đầy đủ thông tin! 🎄');
+                return;
+            }
+
+            document.getElementById('displayRecipient').textContent = recipient;
+            document.getElementById('displaySender').textContent = sender;
+
+            document.getElementById('cardContainer').style.display = 'none';
+            document.getElementById('messageDisplay').classList.add('show');
+
+            createFireworks();
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('recipientName').value = '';
+            document.getElementById('senderName').value = '';
+            document.getElementById('messageDisplay').classList.remove('show');
+            document.getElementById('cardContainer').style.display = 'block';
+        }
+
+        // Tạo pháo hoa
+        function createFireworks() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffd700'];
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight * 0.6;
+                    
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = x + 'px';
+                    firework.style.top = y + 'px';
+                    document.body.appendChild(firework);
+
+                    for (let j = 0; j < 30; j++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'firework-particle';
+                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        
+                        const angle = (Math.PI * 2 * j) / 30;
+                        const velocity = 50 + Math.random() * 100;
+                        particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+                        particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+                        
+                        firework.appendChild(particle);
+                    }
+
+                    setTimeout(() => firework.remove(), 1500);
+                }, i * 400);
+            }
+        }
+
+        createParticles();
+        createSnowflakes();
+    </script>
+</body>
+</html>        @keyframes fall {
             to {
                 transform: translateY(100vh) rotate(360deg);
             }
